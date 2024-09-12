@@ -2,7 +2,7 @@
   "profiles": {
     "MapicsLabelHandoff": {
       "commandName": "Project",
-      "commandLineArgs": "\"WIND-S02B||WINDOW,FIXED,19x17,6904-190-17||39D01Z||P576828||NRM FALCK||EA\""
+      "commandLineArgs": "\"WIND-S02B||WINDOW,FIXED,19x17,6904-190-17||39D01Z||P576828||NRM FALCK||EA||10\""
     }
   }
 }

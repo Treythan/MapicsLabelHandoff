@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace MapicsLabelHandoff
 {
     public partial class Form1 : Form
@@ -14,6 +16,7 @@ namespace MapicsLabelHandoff
         string quantity;
         string receiver;
         string labelAmount;
+        string lastReceiverPath = AppContext.BaseDirectory + "lastReceiver.txt";
         public Form1(string[] args)
         {
             InitializeComponent();
@@ -23,22 +26,29 @@ namespace MapicsLabelHandoff
         private void InitPrint(string[] args)
         {
             //args format = partnumber,partdesc,location,po,jn,uom
-            string[] parsedArgs = args[0].ToString().Split("||");
+            StringBuilder sb = new StringBuilder();
+            foreach (string arg in args) { sb.Append(arg); }
+            string[] parsedArgs = sb.ToString().Split("||");
             partNumber = parsedArgs[0];
             partDescription = parsedArgs[1];
             location = parsedArgs[2];
             purchaseOrder = parsedArgs[3];
             jobNumber = parsedArgs[4];
             unitOfMeasure = parsedArgs[5];
+            quantity = parsedArgs[6].Split(".")[0];
+            labelAmount = "1";
 
+            textBox1.Text = labelAmount;
+            textBox2.Text = quantity;
             textBox6.Text = partNumber;
             textBox5.Text = partDescription;
             textBox4.Text = location;
             textBox9.Text = purchaseOrder;
             textBox8.Text = jobNumber;
             textBox7.Text = unitOfMeasure;
+            textBox3.Text = File.ReadAllText(lastReceiverPath);
 
-            string lbl = "\\\\revginc.net\\AMB-GRP\\AMB-JNC_Orders\\Parts\\Labels\\4x4 Product Receipts AUTOMATED.btw";
+            string lbl = "\\\\revginc.net\\AMB-GRP\\AMB-JNC_Orders\\Parts\\Labels\\4x4 Product Receipts Mapics.btw";
 
             btApp = GenBTIns();
             btApp.Visible = false;
@@ -62,7 +72,13 @@ namespace MapicsLabelHandoff
         {
             labelAmount = textBox1.Text;
             quantity = textBox2.Text;
-            receiver = textBox3.Text.ToUpper();
+            partNumber = textBox6.Text.ToUpper();
+            partDescription = textBox5.Text.ToUpper();
+            location = textBox4.Text.ToUpper();
+            purchaseOrder = textBox9.Text.ToUpper();
+            jobNumber = textBox8.Text.ToUpper();
+            unitOfMeasure = textBox7.Text.ToUpper();
+            receiver = textBox3.Text == "" ? File.ReadAllText(lastReceiverPath) : textBox3.Text.ToUpper();
 
             btFormat.SetNamedSubStringValue("PART_NUMBER", partNumber);
             btFormat.SetNamedSubStringValue("PART_DESCRIPTION", partDescription);
@@ -77,6 +93,8 @@ namespace MapicsLabelHandoff
             {
                 btFormat.PrintOut(false, false);
             }
+
+            File.WriteAllText(lastReceiverPath, receiver);
 
             btFormat.Save();
             this.Close();
@@ -107,6 +125,36 @@ namespace MapicsLabelHandoff
             {
                 FinishPrint();
             }
+        }
+
+        private void textBox1_Click(object sender, EventArgs e)
+        {
+            textBox1.SelectAll();
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
+            textBox1.SelectAll();
+        }
+
+        private void textBox2_Click(object sender, EventArgs e)
+        {
+            textBox2.SelectAll();
+        }
+
+        private void textBox2_Enter(object sender, EventArgs e)
+        {
+            textBox2.SelectAll();
+        }
+
+        private void textBox3_Click(object sender, EventArgs e)
+        {
+            textBox3.SelectAll();
+        }
+
+        private void textBox3_Enter(object sender, EventArgs e)
+        {
+            textBox3.SelectAll();
         }
     }
 }
