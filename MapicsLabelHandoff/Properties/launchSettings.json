@@ -2,7 +2,7 @@
   "profiles": {
     "MapicsLabelHandoff": {
       "commandName": "Project",
-      "commandLineArgs": "\"test||test||test||test||test||test\""
+      "commandLineArgs": "\"2||test||test||test||test||test||test||1.0||customer||serial\""
     }
   }
 }
