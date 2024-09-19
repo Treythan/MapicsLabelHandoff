@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
+using System.Text;
 
 namespace MapicsLabelHandoff
 {
@@ -10,7 +11,20 @@ namespace MapicsLabelHandoff
         static void Main(string[] args)
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1(args));
+
+            StringBuilder sb = new StringBuilder();
+            foreach (string arg in args) { sb.Append(arg); }
+            string[] parsedArgs = sb.ToString().Split("||");
+
+            switch (parsedArgs[0])
+            {
+                case "1":
+                    Application.Run(new Form1(parsedArgs));
+                    break;
+                case "2":
+                    Application.Run(new Form2(parsedArgs));
+                    break;
+            }
         }
     }
 
